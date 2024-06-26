@@ -14,7 +14,7 @@ bool mainMenu(Config &cfg)
 {
     std::string input;
     std::cout << "Select a menu item\n"
-              << "1 - Certbot certificates dir(Default: /etc/letsencrypt/)\n"
+              << "1 - Certbot certificates dir(Default: /etc/letsencrypt/archive)\n"
               << "2 - Set e-mail\n"
               << "3 - Add domain\n"
               << "4 - Set unix user password\n"
@@ -35,6 +35,10 @@ bool mainMenu(Config &cfg)
 
         if(!input.empty())
         {
+            if(input[input.size() - 1] == '/')
+            {
+                input.pop_back();
+            }
             cfg.setCertDir(input);
         }
     }
@@ -141,6 +145,7 @@ void convertParamMenu(Config &cfg)
         std::cout << "Convert to:\n";
         std::cout << "1 - *.key\n"
                   << "2 - *.crt\n"
+                  << "3 - Set the certificate name\n"
                   << "n - Do not convert\n"
                   << "b - Return to the main menu\n";
 
@@ -154,6 +159,15 @@ void convertParamMenu(Config &cfg)
         else if(input == "2")
         {
             cfg.addCertConvertParam(CRT);
+        }
+        else if(input == "3")
+        {
+            std::cout << "Enter the certificate name: ";
+            std::cin >> input;
+            if(!input.empty())
+            {
+                cfg.setCertName(input);
+            }
         }
         else if(input == "n")
         {
@@ -170,7 +184,7 @@ void showConfig(Config &cfg)
 {
 //    system("clear");
     std::cout << "\n-------------------------------------\n" << "\tCurrent configuration:\n";
-    std::cout << "Path to the certbot dir: " << cfg.getCertDir() << "\n";
+    std::cout << "Path to the certbot certificates dir: " << cfg.getCertDir() << "\n";
     std::cout << "Your e-mail: " << cfg.getEmail() << "\n";
 
     showDomains(cfg.getDomains());
@@ -225,5 +239,8 @@ void showConvertParam(Config &cfg)
     {
         std::cout << "Do not convert\n";
     }
+
+    std::cout << "Target certificate name: " << cfg.getCertName() << "\n";
+
     std::cout << std::endl;
 }

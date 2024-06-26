@@ -17,8 +17,9 @@ enum ConvertParam
 class Config
 {
     std::string path = ".config.cfg";
-    std::string certDir = "/etc/letsencrypt/";
+    std::string certDir = "/etc/letsencrypt/archive";
     std::string targetDir = "Not specified";
+    std::string certName = "Not specified";
     std::string email = "Not specified";
     std::string userPass = "Not specified";
     std::vector<std::string> domains;
@@ -46,10 +47,14 @@ public:
     int getDomainsNum();
 
     void setUserPass(std::string &_pass);
+    std::string getUserPass();
     bool haveUserPassword();
 
     void setTargetDir(std::string _path);
     std::string getTargetDir();
+
+    void setCertName(std::string _name);
+    std::string getCertName();
 
     void addCertConvertParam(ConvertParam _param);
     void removeCerConvertParam(ConvertParam _param);

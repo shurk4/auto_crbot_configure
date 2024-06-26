@@ -51,6 +51,10 @@ void Config::readConfig()
                 {
                     targetDir = tempStr.substr(tempStr.find("=") + 1);
                 }
+                else if(tempStr.find("certName") != std::string::npos)
+                {
+                    certName = tempStr.substr(tempStr.find("=") + 1);
+                }
                 else if(tempStr.find("convert") != std::string::npos)
                 {
                     convertCert = std::stoi(tempStr.substr(tempStr.find("=") + 1));
@@ -90,6 +94,7 @@ void Config::writeConfig()
 
             cfgFile << "pass=" << userPass << "\n";
             cfgFile << "targetDir=" << targetDir << "\n";
+            cfgFile << "certName=" << certName <<"\n";
             cfgFile << "convert=" << convertCert;
 
             std::cout << "The config file has been saved!\n";
@@ -170,6 +175,11 @@ void Config::setUserPass(std::string &_pass)
     userPass = _pass;
 }
 
+std::string Config::getUserPass()
+{
+    return userPass;
+}
+
 bool Config::haveUserPassword()
 {
     return userPass != "Not specified";
@@ -183,6 +193,16 @@ void Config::setTargetDir(std::string _path)
 std::string Config::getTargetDir()
 {
     return targetDir;
+}
+
+void Config::setCertName(std::string _name)
+{
+    certName = _name;
+}
+
+std::string Config::getCertName()
+{
+    return certName;
 }
 
 void Config::addCertConvertParam(ConvertParam _param)
